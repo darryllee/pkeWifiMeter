@@ -27,7 +27,6 @@ class WirelessList:
 
 	def update(self):
 		if( time.time() - self.updateTime > 0.25 ):
-			print( "update" )
 			self.updateTime = time.time()
 			filepath = "pkeMeterLog*.csv"
 			files = glob.glob(filepath)
@@ -39,10 +38,11 @@ class WirelessList:
     					for row in reader:
 						if len(row) == 15 and row[0] != "BSSID":
         						signal = int(row[8][1:])
-							#if signal > nearestSignal:
-							nearestSignal = signal
-							self.nearestSignal = signal
-							self.nearestWifi = row[13][1:]
+							print signal
+							if signal > nearestSignal:
+								nearestSignal = signal
+								self.nearestSignal = signal
+								self.nearestWifi = row[13][1:]
 				finally:
     					f.close()
 

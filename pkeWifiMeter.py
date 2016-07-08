@@ -1,6 +1,7 @@
 import pygame
 import time
 from pkeWifiMeter_wirelessList import WirelessList
+from pkeWifiMeter_hardware import Hardware
 
 # initialize game engine
 pygame.init()
@@ -12,6 +13,7 @@ size = [480, 272]
 clock = pygame.time.Clock()
 
 wifi = WirelessList()
+hardware = Hardware()
 
 # Loop until the user clicks close button
 done = False
@@ -30,8 +32,9 @@ while done == False:
     # fps
     clock.tick(60)
     wifi.update()
-    print wifi.getNearestDeviceName()
-    print wifi.getNearestDeviceStrength()
+    if wifi.getNearestDeviceName():
+	print wifi.getNearestDeviceName()
+    	hardware.update(wifi.getNearestDeviceStrength())
  
 wifi.shutdown()
 # close the window and quit
