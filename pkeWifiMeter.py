@@ -18,26 +18,30 @@ hardware = Hardware()
 # Loop until the user clicks close button
 done = False
 while done == False:
-    # write event handlers here
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
-    # write game logic here
- 
-    # clear the screen before drawing
-    #screen.fill((255, 255, 255)) 
+	# write event handlers here
+	try:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				done = True
+	except:
+		done = True
 
-   # pygame.display.update()
+	try: 
+		# clear the screen before drawing
+		#screen.fill((255, 255, 255)) 
+
+		# pygame.display.update()
     
-    # fps
-    clock.tick(60)
-    wifi.update()
-    if wifi.getNearestDeviceName():
-	print wifi.getNearestDeviceName()
-    	hardware.update(wifi.getNearestDeviceStrength())
+		# fps
+		clock.tick(60)
+		wifi.update()	
+		if wifi.getNearestDeviceName():
+			print wifi.getNearestDeviceName()
+			hardware.update(wifi.getNearestDeviceStrength())
+	except:
+		done = True
  
 wifi.shutdown()
+hardware.shutdown()
 # close the window and quit
 pygame.quit()
-
-wifi = WirelessList()
