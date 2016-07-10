@@ -26,7 +26,7 @@ class WirelessList:
 		subprocess.call(['sudo rm pkeMeterLog*.csv > /dev/null 2>&1'],shell=True)
 
 	def update(self):
-		if( time.time() - self.updateTime > 0.25 ):
+		if( time.time() - self.updateTime > 0.5 ):
 			self.updateTime = time.time()
 			filepath = "pkeMeterLog*.csv"
 			files = glob.glob(filepath)
@@ -38,7 +38,6 @@ class WirelessList:
     					for row in reader:
 						if len(row) == 15 and row[0] != "BSSID":
         						signal = int(row[8][1:])
-							print signal
 							if signal > nearestSignal:
 								nearestSignal = signal
 								self.nearestSignal = signal

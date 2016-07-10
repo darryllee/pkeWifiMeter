@@ -34,9 +34,18 @@ while done == False:
     
 		# fps
 		clock.tick(60)
-		wifi.update()	
+		wifi.update()
+		#hardware.update(-50)
+		#time.sleep(1)
+		#hardware.update(-40)
+		#time.sleep(1)
+		#hardware.update(-30)
+		#time.sleep(1)
+		#hardware.update(-20)
+		#time.sleep(1)
 		if wifi.getNearestDeviceName():
-			print wifi.getNearestDeviceName()
+			#print wifi.getNearestDeviceName()
+			#print wifi.getNearestDeviceStrength()
 			hardware.update(wifi.getNearestDeviceStrength())
 	except:
 		done = True

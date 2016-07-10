@@ -1,25 +1,57 @@
 import Adafruit_PCA9685
+import time
 
 class Hardware:
 	def __init__(self):
 		self.pwm = Adafruit_PCA9685.PCA9685(address=0x40, busnum=2)
 		self.pwm.set_pwm_freq(60)
-		print "HARDWaRE INIT!"
+		self.updateTime = time
+		self.ledCurSpeed = 1
+		self.ledNewSpeed = 1
+		self.activeLED = 0
+		self.totalLEDs = 7
+		self.ledPWMvalues = []
+
+		for led in self.ledPWMvalues:
+			led = 0
+
+		self.updateTime = time.time()
+		#self.pwm.set_pwm(8, 0, 2624)
 
 	def shutdown(self):
 		self.pwm.set_pwm(0, 0, 0)
-		print "HARDWARE SHUTDOWN"
 
-	def set_servo_pulse(self, channel, pulse):
-		pulse_length = 1000000    # 1,000,000 us per second
-    		pulse_length //= 60       # 60 Hz
-		pulse_length //= 4096     # 12 bits of resolution
-		pulse *= 1000
-		pulse //= pulse_length
-		self.pwm.set_pwm(channel, 0, pulse)
+	def updateLEDs(self,signal):
+		for i in range(1,self.totalLEDs):
+			if i == self.activeLED:
+				self.ledPWMvalues[i] = self.ledPWMvalues+0.001
+				if self.ledPWMvalues[i] > 4000:
+					self.ledPWMvalues[i] = 4000
+			else:
+				self.ledPWMvalues[i] = self.ledPWMvalues[i]-0.001
+			 	if self.ledPWMvalues[i] < 0:
+                                        self.ledPWMvalues[i] = 0
+
+			#self.pwm.set_pwm(i, 0, self.ledPWMvalues[i])
+		
+		self.ledNewSpeed = (signal*.007)*-1
+
+		if( self.ledCurSpeed < self.ledNewSpeed ):
+			self.ledCurSpeed = self.ledCurSpeed + 0.01
+		elif( self.ledCurSpeed > self.ledNewSpeed ):
+			self.ledCurSpeed = self.ledCurSpeed - 0.01
+
+		if time.time() - self.updateTime > self.ledCurSpeed:
+			self.updateTime = time.time()
+			self.activeLED = self.activeLED + 1
+			if self.activeLED > self.totalLEDs:
+				self.activeLED = 1
 
 	def updateServo(self,signal):
 		self.pwm.set_pwm(0, 0, 10-(signal*100))
+		#self.set_servo_pulse(0,700)
 
 	def update(self,signal):
+		signal = -30
 		self.updateServo(((signal + 20)*-10)/-40)
+		self.updateLEDs(signal)
