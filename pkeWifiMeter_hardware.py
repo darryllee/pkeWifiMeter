@@ -4,8 +4,12 @@ import time
 
 class Hardware:
 	def __init__(self):
-		self.pwm = Adafruit_PCA9685.PCA9685(address=0x40, busnum=2)
-		self.pwm.set_pwm_freq(60)
+		try:
+			self.pwm = Adafruit_PCA9685.PCA9685(address=0x40, busnum=2)
+			self.pwm.set_pwm_freq(60)
+		except:
+			self.pwm = None
+
 		self.updateTime = time
 		self.ledCurSpeed = 1
 		self.ledNewSpeed = 1
@@ -20,7 +24,8 @@ class Hardware:
 		#self.pwm.set_pwm(8, 0, 2624)
 
 	def shutdown(self):
-		self.pwm.set_pwm(0, 0, 0)
+		if self.pwm:
+			self.pwm.set_pwm(0, 0, 0)
 
 	def updateLEDs(self,signal):
 		for i in range(0,self.totalLEDs):
@@ -32,8 +37,8 @@ class Hardware:
 				self.ledPWMvalues[i] = self.ledPWMvalues[i]-600
 			 	if self.ledPWMvalues[i] < 0:
                                         self.ledPWMvalues[i] = 0
-
-			self.pwm.set_pwm(i+1, 0, self.ledPWMvalues[i])
+			if self.pwm:
+				self.pwm.set_pwm(i+1, 0, self.ledPWMvalues[i])
 		
 		self.ledNewSpeed = (signal*.007)*-1
 
@@ -49,8 +54,9 @@ class Hardware:
 				self.activeLED = 1
 
 	def updateServo(self,signal):
-		self.pwm.set_pwm(0, 0, 10-(signal*100))
-		#self.set_servo_pulse(0,700)
+		if self.pwm:
+			self.pwm.set_pwm(0, 0, 10-(signal*100))
+			#self.set_servo_pulse(0,700)
 
 	def update(self,signal):
 		signal = -50
