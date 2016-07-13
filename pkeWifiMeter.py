@@ -2,6 +2,7 @@ import pygame
 import time
 import os
 import sys
+from random import randint
 from pkeWifiMeter_wirelessList import WirelessList
 from pkeWifiMeter_hardware import Hardware
 
@@ -21,7 +22,7 @@ wifi = WirelessList()
 hardware = Hardware()
 
 pygame.bgImage = pygame.image.load(kPath+"/pke_background.gif").convert_alpha()
-pygame.staticImage = pygame.image.load(kPath+"/pke_static.gif").convert_alpha()
+pygame.staticImage = pygame.image.load(kPath+"/pke_static.gif").convert()
 
 # Loop until the user clicks close button
 done = False
@@ -48,8 +49,22 @@ while done == False:
 	        pygame.screen.blit(pygame.bgImage, (0,0))
 
 		#pygame.staticImage.set_alpha(10)
+		xflip = False
 
-		#pygame.screen.blit(pygame.staticImage, (0,0))
+		if randint(0,1) == 1:
+			xflip = True
+
+		yflip = False
+
+		if randint(0,1) == 1:
+			yflip = True
+
+       		static = pygame.transform.flip(pygame.staticImage, xflip, yflip)
+		static.set_alpha(50)
+		pygame.screen.blit(static, (0,0))
+		
+		#pygame.staticImage.set_alpha(50)		
+
 		pygame.display.flip()
 
 		if wifi.getNearestDeviceName():
