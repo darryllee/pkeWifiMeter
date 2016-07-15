@@ -5,8 +5,9 @@ import time
 class Hardware:
 	def __init__(self):
 		try:
+			# Initialize Adafruit 16 channel PWM hardware on the second I2C bus interface
 			self.pwm = Adafruit_PCA9685.PCA9685(address=0x40, busnum=2)
-			self.pwm.set_pwm_freq(60)
+			self.pwm.set_pwm_freq(60) # Best for servos
 		except:
 			self.pwm = None
 
@@ -28,6 +29,7 @@ class Hardware:
 			self.pwm.set_pwm(0, 0, 0)
 
 	def updateLEDs(self,signal):
+		# Animate all seven LED's based on the closest wifi signal strength
 		for i in range(0,self.totalLEDs):
 			if i == self.activeLED-1:
 				self.ledPWMvalues[i] = self.ledPWMvalues[i]+600
@@ -55,7 +57,7 @@ class Hardware:
 
 	def updateServo(self,signal):
 		if self.pwm:
-			self.pwm.set_pwm(0, 0, 10-(signal*100))
+			self.pwm.set_pwm(0, 0, 10-(signal*100)) # Set rotation of servo on channel #0
 			#self.set_servo_pulse(0,700)
 
 	def update(self,signal):
