@@ -66,7 +66,7 @@ class Hardware:
 			elif rotation1 > 650:
 				rotation1 = 650
 
-			rotation2 = (650-rotation1)
+			rotation2 = int((650-rotation1)*.8)
 			print rotation1
 			print rotation2
 			
