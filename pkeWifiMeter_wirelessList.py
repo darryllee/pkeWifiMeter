@@ -16,17 +16,20 @@ class WirelessList:
 		self.nearestWifi = None
 		self.nearestSignal = -100
 		self.updateTime = time.time()
-		subprocess.call(['sudo','ifconfig','wlan0','down'])
-		subprocess.call(['sudo','iwconfig','wlan1','mode','monitor'])
-		subprocess.call(['sudo rm pkeMeterLog*.csv > /dev/null 2>&1'],shell=True)
-		airodump = subprocess.Popen(['sudo airodump-ng wlan1 --write pkeMeterLog --write-interval 1 --output-format csv > /dev/null 2>&1'],shell=True)
+		#subprocess.call(['sudo','ifconfig','wlan0','down'])
+		#subprocess.call(['sudo','iwconfig','wlan1','mode','monitor'])
+		#subprocess.call(['sudo rm pkeMeterLog*.csv > /dev/null 2>&1'],shell=True)
+		#airodump = subprocess.Popen(['sudo airodump-ng wlan0 --write pkeMeterLog --write-interval 1 --output-format csv > /dev/null 2>&1'],shell=True)
 
 	def shutdown(self):
+		print( "Restoring wifi..." )
 		os.system('sudo pkill -9 airodump-ng')
 		subprocess.call(['sudo rm pkeMeterLog*.csv > /dev/null 2>&1'],shell=True)
+		subprocess.call(['sudo','ifconfig','wlan0','up'])
+		subprocess.call(['sudo','iwconfig','wlan1','mode','managed'])
 
 	def update(self):
-		if( time.time() - self.updateTime > 0.5 ):
+		if( time.time() - self.updateTime >= 0.1 ):
 			self.updateTime = time.time()
 			filepath = "pkeMeterLog*.csv"
 			files = glob.glob(filepath)

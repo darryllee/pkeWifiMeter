@@ -3,7 +3,7 @@ A wifi proximity meter themed to function like a Ghostbusters PKE meter using Po
 
 
 sudo apt-get build-dep aircrack-ng
-sudo apt-get install libssl-dev
+sudo apt-get install libssl-dev wireless-tools
 wget http://download.aircrack-ng.org/aircrack-ng-1.2-rc4.tar.gz
 tar -zxvf aircrack-ng-1.2-rc4.tar.gz
 cd aircrack-ng-1.2-rc4

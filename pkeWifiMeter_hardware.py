@@ -2,6 +2,8 @@ import Adafruit_PCA9685
 import array
 import time
 
+kServoMax = 800
+
 class Hardware:
 	def __init__(self):
 		try:
@@ -26,7 +28,8 @@ class Hardware:
 
 	def shutdown(self):
 		if self.pwm:
-			self.pwm.set_pwm(0, 0, 0)
+			for i in range(self.totalLEDs):
+				self.pwm.set_pwm(i,0,0)
 
 	def updateLEDs(self,signal):
 		# Animate all seven LED's based on the closest wifi signal strength
@@ -57,10 +60,20 @@ class Hardware:
 
 	def updateServo(self,signal):
 		if self.pwm:
-			self.pwm.set_pwm(0, 0, 10-(signal*100)) # Set rotation of servo on channel #0
-			#self.set_servo_pulse(0,700)
+			rotation1 = 10-(signal*80)
+			if rotation1 < 0:
+				rotation1 = 0
+			elif rotation1 > 650:
+				rotation1 = 650
+
+			rotation2 = (650-rotation1)
+			print rotation1
+			print rotation2
+			
+			self.pwm.set_pwm(0,0,rotation1+150)
+			self.pwm.set_pwm(15,0,rotation2+150)
 
 	def update(self,signal):
-		signal = -50
+		#signal = -50
 		self.updateServo(((signal + 20)*-10)/-40)
 		self.updateLEDs(signal)
