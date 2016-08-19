@@ -45,12 +45,12 @@ class Hardware:
 			if self.pwm:
 				self.pwm.set_pwm(i+1, 0, self.ledPWMvalues[i])
 		
-		self.ledNewSpeed = (signal*.007)*-1
+		self.ledNewSpeed = (signal*.005)*-1
 
 		if( self.ledCurSpeed < self.ledNewSpeed ):
-			self.ledCurSpeed = self.ledCurSpeed + 0.01
+			self.ledCurSpeed = self.ledCurSpeed + 0.03
 		elif( self.ledCurSpeed > self.ledNewSpeed ):
-			self.ledCurSpeed = self.ledCurSpeed - 0.01
+			self.ledCurSpeed = self.ledCurSpeed - 0.03
 
 		if time.time() - self.updateTime > self.ledCurSpeed:
 			self.updateTime = time.time()

@@ -113,11 +113,11 @@ while done == False:
 		# Adjust manual control, if currently active.
 		if pygame.manualControl == True:
 			if pygame.manualDirection == 1:
-				pygame.manualValue = pygame.manualValue + 1.5
+				pygame.manualValue = pygame.manualValue + 2.5
 				if pygame.manualValue > -20:
 					pygame.manualValue = -20
 			elif pygame.manualDirection == -1:
-				pygame.manualValue = pygame.manualValue - 1.5
+				pygame.manualValue = pygame.manualValue - 2.5
 				if pygame.manualValue < -50:
 					pygame.manualValue = -50
 
@@ -131,7 +131,7 @@ while done == False:
 			hardware.update(wifi.getNearestDeviceStrength())
 			signal = wifi.getNearestDeviceStrength()
 
-		updateDisplay(wifiName,signal)
+		#updateDisplay(wifiName,signal)
 
 	except:
 		print "Unexpected error:", sys.exc_info()[0]
